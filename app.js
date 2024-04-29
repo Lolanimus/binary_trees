@@ -50,6 +50,7 @@ class Tree {
   constructor() {
     this.root = null;
     this.counter = 0;
+    this.stack = [];
   }
 
   buildTree(arr, start = 0, end = 0) {
@@ -97,10 +98,33 @@ class Tree {
       else this.insert(value, root.left);
     }
   }
+
+  deleteItem(value, root = this.root) {
+    if (root == undefined) return root;
+    if (value < root.data) root.left = this.deleteItem(value, root.left);
+    else if (value > root.data) root.right = this.deleteItem(value, root.right);
+    else {
+      if (root.left == undefined) return root.right;
+      else if (root.right == undefined) return root.left;
+      root.data = this.minValue(root.right);
+      root.right = this.deleteItem(root.data, root.right);
+    }
+    return root;
+  }
+
+  minValue(node) {
+    let minv = node.data;
+    while (node.left !== null) {
+      minv = node.left.data;
+      node = node.left;
+    }
+    return minv;
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
 tree.insert(6346);
+tree.deleteItem();
 tree.prettyPrint(head);
