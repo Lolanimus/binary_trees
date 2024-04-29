@@ -59,16 +59,15 @@ class Tree {
       end = arr.length;
       this.counter++;
     }
-    let treeArr = [];
 
     if (start > end) return null;
     let mid = Math.floor((start + end) / 2);
     if (arr[mid] == undefined) return null;
-    let root = new Node(arr[mid]);
-    root.left = this.buildTree(arr, start, mid - 1);
-    root.right = this.buildTree(arr, mid + 1, end);
-    treeArr.push(root);
-    return root;
+    let head = new Node(arr[mid]);
+    head.left = this.buildTree(arr, start, mid - 1);
+    head.right = this.buildTree(arr, mid + 1, end);
+    this.root = head;
+    return this.root;
   }
 
   prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -87,9 +86,21 @@ class Tree {
       this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   };
+
+  insert(value, root = this.root) {
+    if (root.data == undefined || value == root.data) return null;
+    else if (value > root.data) {
+      if (root.right == undefined) root.right = new Node(value);
+      else this.insert(value, root.right);
+    } else {
+      if (root.left == undefined) root.left = new Node(value);
+      else this.insert(value, root.left);
+    }
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
+tree.insert(6346);
 tree.prettyPrint(head);
