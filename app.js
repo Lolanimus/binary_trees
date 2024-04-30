@@ -120,11 +120,18 @@ class Tree {
     }
     return minv;
   }
+
+  find(value, root = this.root) {
+    if (root == undefined) return null;
+    if (root.data > value) return this.find(value, root.left);
+    else if (root.data < value) return this.find(value, root.right);
+    else return root;
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
 tree.insert(6346);
-tree.deleteItem();
 tree.prettyPrint(head);
+console.log(tree.find(8));
