@@ -50,6 +50,7 @@ class Tree {
   constructor() {
     this.root = null;
     this.counter = 0;
+    this.orderArr = [];
   }
 
   buildTree(arr, start = 0, end = 0) {
@@ -149,6 +150,33 @@ class Tree {
 
     return result;
   }
+
+  inOrder(root) {
+    if (root == undefined) return null;
+
+    this.inOrder(root.left);
+    this.orderArr.push(root.data);
+    this.inOrder(root.right);
+    return this.orderArr;
+  }
+
+  preOrder(root) {
+    if (root == undefined) return null;
+
+    this.orderArr.push(root.data);
+    this.preOrder(root.left);
+    this.preOrder(root.right);
+    return this.orderArr;
+  }
+
+  postOrder(root) {
+    if (root == undefined) return null;
+
+    this.postOrder(root.left);
+    this.postOrder(root.right);
+    this.orderArr.push(root.data);
+    return this.orderArr;
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -156,4 +184,4 @@ let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
 tree.insert(6346);
 tree.prettyPrint(head);
-console.log(tree.levelOrder(head));
+console.log(tree.postOrder(head));
