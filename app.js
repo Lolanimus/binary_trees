@@ -50,7 +50,6 @@ class Tree {
   constructor() {
     this.root = null;
     this.counter = 0;
-    this.stack = [];
   }
 
   buildTree(arr, start = 0, end = 0) {
@@ -127,6 +126,29 @@ class Tree {
     else if (root.data < value) return this.find(value, root.right);
     else return root;
   }
+
+  levelOrder(root) {
+    let result = [];
+    if (root === null) return result;
+
+    let queue = [root];
+
+    while (queue.length > 0) {
+      let levelSize = queue.length;
+      let currentLevel = [];
+
+      for (let i = 0; i < levelSize; i++) {
+        let currentNode = queue.shift();
+        currentLevel.push(currentNode.data);
+        if (currentNode.left !== null) queue.push(currentNode.left);
+        if (currentNode.right !== null) queue.push(currentNode.right);
+      }
+
+      result.push(currentLevel);
+    }
+
+    return result;
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -134,4 +156,4 @@ let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
 tree.insert(6346);
 tree.prettyPrint(head);
-console.log(tree.find(8));
+console.log(tree.levelOrder(head));
