@@ -177,6 +177,11 @@ class Tree {
     this.orderArr.push(root.data);
     return this.orderArr;
   }
+
+  depth(node) {
+    let levelOrderArr = this.levelOrder(node);
+    return levelOrderArr.length;
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -184,4 +189,4 @@ let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
 tree.insert(6346);
 tree.prettyPrint(head);
-console.log(tree.postOrder(head));
+console.log(tree.depth(head));
