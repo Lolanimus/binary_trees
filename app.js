@@ -182,11 +182,28 @@ class Tree {
     let levelOrderArr = this.levelOrder(node);
     return levelOrderArr.length;
   }
+
+  isBalanced(head) {
+    let leftTree = tree.depth(head.left);
+    let rightTree = tree.depth(head.right);
+    return !(Math.abs(leftTree - rightTree) > 1);
+  }
+
+  balance(head) {
+    let treeArr = this.inOrder(head);
+    this.root = null;
+    this.counter = 0;
+    let newRoot = this.buildTree(treeArr);
+    return newRoot;
+  }
 }
 
 let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
 tree.insert(6346);
+tree.insert(6347);
+tree.insert(6348);
+head = tree.balance(head);
 tree.prettyPrint(head);
-console.log(tree.depth(head));
+console.log(tree.isBalanced(head));
