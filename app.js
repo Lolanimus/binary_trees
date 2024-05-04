@@ -51,6 +51,7 @@ class Tree {
     this.root = null;
     this.counter = 0;
     this.orderArr = [];
+    this.orderCount = 0;
   }
 
   buildTree(arr, start = 0, end = 0) {
@@ -151,31 +152,27 @@ class Tree {
     return result;
   }
 
-  inOrder(root) {
+  inOrder(root, results) {
     if (root == undefined) return null;
-
-    this.inOrder(root.left);
-    this.orderArr.push(root.data);
-    this.inOrder(root.right);
-    return this.orderArr;
+    this.inOrder(root.left, results);
+    results.push(root.data);
+    this.inOrder(root.right, results);
   }
 
-  preOrder(root) {
+  preOrder(root, results) {
     if (root == undefined) return null;
 
-    this.orderArr.push(root.data);
-    this.preOrder(root.left);
-    this.preOrder(root.right);
-    return this.orderArr;
+    results.push(root.data);
+    this.preOrder(root.left, results);
+    this.preOrder(root.right, results);
   }
 
-  postOrder(root) {
+  postOrder(root, results) {
     if (root == undefined) return null;
 
-    this.postOrder(root.left);
-    this.postOrder(root.right);
-    this.orderArr.push(root.data);
-    return this.orderArr;
+    this.postOrder(root.left, results);
+    this.postOrder(root.right, results);
+    results.push(root.data);
   }
 
   depth(node) {
@@ -189,21 +186,57 @@ class Tree {
     return !(Math.abs(leftTree - rightTree) > 1);
   }
 
-  balance(head) {
-    let treeArr = this.inOrder(head);
+  balance(head, results) {
+    this.inOrder(head, results);
     this.root = null;
     this.counter = 0;
-    let newRoot = this.buildTree(treeArr);
+    let newRoot = this.buildTree(results, 0, results.length);
     return newRoot;
   }
 }
 
-let arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+let arr = [];
+for (let i = 0; i < 20; i++) {
+  arr.push(Math.floor(Math.random() * 100));
+}
 let tree = new Tree();
 let head = tree.buildTree(arr, 0, arr.length);
-tree.insert(6346);
-tree.insert(6347);
-tree.insert(6348);
-head = tree.balance(head);
+console.log("The tree is balanced: " + tree.isBalanced(head));
+console.log();
+console.log("Tree in level order: " + tree.levelOrder(head));
+console.log();
+let results = [];
+tree.inOrder(head, results);
+console.log("Tree in order: " + results);
+console.log();
+results = [];
+tree.preOrder(head, results);
+console.log("Tree in pre order: " + results);
+console.log();
+results = [];
+tree.postOrder(head, results);
+console.log("Tree in post order: " + results);
+console.log();
 tree.prettyPrint(head);
-console.log(tree.isBalanced(head));
+results = [];
+for (let i = 0; i < 20; i++) {
+  results.push(Math.floor(Math.random() * 1000));
+}
+head = tree.balance(head, results);
+console.log("The tree is balanced: " + tree.isBalanced(head));
+console.log();
+console.log("Tree in level order: " + tree.levelOrder(head));
+console.log();
+results = [];
+tree.inOrder(head, results);
+console.log("Tree in order: " + results);
+console.log();
+results = [];
+tree.preOrder(head, results);
+console.log("Tree in pre order: " + results);
+console.log();
+results = [];
+tree.postOrder(head, results);
+console.log("Tree in post order: " + results);
+console.log();
+tree.prettyPrint(head);
